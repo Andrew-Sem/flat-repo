@@ -80,12 +80,11 @@ fn should_skip_directory(path: &Path) -> bool {
 
 fn should_skip_file(path: &Path) -> bool {
     let skip_extensions = [
-        "exe", "dll", "so", "dylib",  // Бинарные файлы
-        "jpg", "jpeg", "png", "gif", "bmp",  // Изображения
-        "mp3", "wav", "ogg",  // Аудио
-        "mp4", "avi", "mov",  // Видео
-        "zip", "tar", "gz", "7z",  // Архивы,
-        "license"
+        "exe", "dll", "so", "dylib",
+        "jpg", "jpeg", "png", "gif", "bmp",
+        "mp3", "wav", "ogg",
+        "mp4", "avi", "mov",
+        "zip", "tar", "gz", "7z",
     ];
 
     let skip_filenames = [
