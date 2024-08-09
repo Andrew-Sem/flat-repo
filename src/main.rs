@@ -109,4 +109,6 @@ fn should_skip_file(path: &Path) -> bool {
         .unwrap_or(false)
 }
 
-// @todo #82:120min Write tests for core logic.
+// @todo #82:90min Write tests for the core logic
+// Maybe we can use some fake gh api for this.
+// For example, https://github.com/h1alexbel/fakehub
