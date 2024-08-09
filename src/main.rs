@@ -3,6 +3,8 @@ use std::fs::{self, File};
 use std::io::{Write, Error, BufWriter};
 use std::path::{Path, PathBuf};
 
+
+
 fn main() -> Result<(), Error> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 || args.len() > 3 {
@@ -106,3 +108,5 @@ fn should_skip_file(path: &Path) -> bool {
         .map(|ext| skip_extensions.contains(&ext.to_lowercase().as_str()))
         .unwrap_or(false)
 }
+
+// @todo #82:120min Write tests for core logic.
