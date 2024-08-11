@@ -22,10 +22,8 @@
 
 use std::env;
 use std::fs::{self, File};
-use std::io::{Write, Error, BufWriter};
+use std::io::{BufWriter, Error, Write};
 use std::path::{Path, PathBuf};
-
-
 
 fn main() -> Result<(), Error> {
     let args: Vec<String> = env::args().collect();
@@ -35,7 +33,10 @@ fn main() -> Result<(), Error> {
     }
 
     let repo_path = &args[1];
-    let output_path = args.get(2).map(String::as_str).unwrap_or("flattened_repo.txt");
+    let output_path = args
+        .get(2)
+        .map(String::as_str)
+        .unwrap_or("flattened_repo.txt");
 
     flatten_repository(repo_path, output_path)?;
 
@@ -54,7 +55,11 @@ fn flatten_repository(repo_path: &str, output_path: &str) -> Result<(), Error> {
     Ok(())
 }
 
-fn visit_dirs(dir: &Path, writer: &mut BufWriter<File>, output_path: &Path) -> Result<(), Error> {
+fn visit_dirs(
+    dir: &Path,
+    writer: &mut BufWriter<File>,
+    output_path: &Path,
+) -> Result<(), Error> {
     if dir.is_dir() {
         for entry in fs::read_dir(dir)? {
             let entry = entry?;
@@ -75,7 +80,10 @@ fn visit_dirs(dir: &Path, writer: &mut BufWriter<File>, output_path: &Path) -> R
     Ok(())
 }
 
-fn write_file_content(file_path: &Path, writer: &mut BufWriter<File>) -> Result<(), Error> {
+fn write_file_content(
+    file_path: &Path,
+    writer: &mut BufWriter<File>,
+) -> Result<(), Error> {
     let file_name = file_path.file_name().unwrap().to_str().unwrap();
     let content = fs::read_to_string(file_path)?;
 
@@ -104,11 +112,8 @@ fn should_skip_directory(path: &Path) -> bool {
 
 fn should_skip_file(path: &Path) -> bool {
     let skip_extensions = [
-        "exe", "dll", "so", "dylib",
-        "jpg", "jpeg", "png", "gif", "bmp",
-        "mp3", "wav", "ogg",
-        "mp4", "avi", "mov",
-        "zip", "tar", "gz", "7z",
+        "exe", "dll", "so", "dylib", "jpg", "jpeg", "png", "gif", "bmp", "mp3", "wav",
+        "ogg", "mp4", "avi", "mov", "zip", "tar", "gz", "7z",
     ];
 
     let skip_filenames = [
@@ -116,7 +121,7 @@ fn should_skip_file(path: &Path) -> bool {
         "package-lock.yml",
         "yarn.lock",
         "Cargo.lock",
-        "LICENSE"
+        "LICENSE",
     ];
 
     if let Some(file_name) = path.file_name().and_then(|n| n.to_str()) {
@@ -124,7 +129,7 @@ fn should_skip_file(path: &Path) -> bool {
             return true;
         }
     }
-    
+
     path.extension()
         .and_then(|ext| ext.to_str())
         .map(|ext| skip_extensions.contains(&ext.to_lowercase().as_str()))
@@ -142,4 +147,3 @@ fn should_skip_file(path: &Path) -> bool {
 // Think about what should be included
 // Or even we can convert this app to http service
 // And pass config in headers ot smth
-
