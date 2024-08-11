@@ -19,11 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
----
-architect:
-  - Andrew-Sem
-docker:
-  image: yegor256/rultor-image:1.23.1
-merge:
-  script: |
-    just rultor
+
+# Rultor merge script.
+rultor:
+  cargo --color=never test -vv
+  cargo +nightly fmt --check -- --color=never
+  cargo doc --no-deps
+  cargo clippy

@@ -109,6 +109,15 @@ fn should_skip_file(path: &Path) -> bool {
         .unwrap_or(false)
 }
 
-// @todo #82:90min Write tests for the core logic
+// @todo #2:90min Write tests for the core logic
 // Maybe we can use some fake gh api for this.
 // For example, https://github.com/h1alexbel/fakehub
+// @todo #3:30min extend file extensions to skip
+// Add everything from .gitignore
+// Maybe we can use flag for this
+// Or pass them by config file
+// @todo #4:60min config file research
+// Think about what should be included
+// Or even we can convert this app to http service
+// And pass config in headers ot smth
+

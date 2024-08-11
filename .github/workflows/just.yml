@@ -20,10 +20,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 ---
-architect:
-  - Andrew-Sem
-docker:
-  image: yegor256/rultor-image:1.23.1
-merge:
-  script: |
-    just rultor
+name: just
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+env:
+  RUSTFLAGS: "-Dwarnings"
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-12]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+        with:
+          just-version: ${{ matrix.just-version }}
+        name: Install toolchain
+      - run: rustup toolchain install nightly
+        name: Build
+      - name: Install cargo-fmt (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        run: rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
+      - name: Install cargo-fmt (Windows)
+        if: ${{ runner.os == 'Windows' }}
+        run: rustup component add --toolchain nightly-x86_64-pc-windows-msvc rustfmt
+      - name: Install cargo-fmt (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        run: rustup component add --toolchain nightly-x86_64-apple-darwin rustfmt
+      - run: just build
