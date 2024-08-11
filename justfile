@@ -20,6 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Build the project.
+build:
+  cargo clean
+  just test
+  just check
+  cargo build
+
+# Run tests.
+test:
+  cargo test
+
+# Check the quality of code.
+check:
+  cargo clippy --all-targets --all-features
+  cargo +nightly fmt --check
+
 # Rultor merge script.
 rultor:
   cargo --color=never test -vv
